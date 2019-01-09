@@ -18,12 +18,12 @@
         </div>
       </div>
     </div>
-    <div class="wedding-cell wedding-photo-board">
+    <div class="wedding-cell">
       <div class="wedding-common-cell-header">
         <div class="wedding-common-cell-header-title">婚礼风格愿景板</div>
       </div>
-      <div class="wedding-photo-board-content">
-        <div>
+      <div class="wedding-content">
+        <div class="wedding-photo-board">
           <vue-gallery-pictures
             :items="items"
             :boxInitRatio=77
@@ -44,7 +44,7 @@
       <div class="wedding-common-cell-header">
         <div class="wedding-common-cell-header-title">婚礼性格</div>
       </div>
-      <div class="wedding-photo-board-content"></div>
+      <div class="wedding-cell-content"></div>
     </div>
     <div class="wedding-cell wedding-photo-board">
       <div class="wedding-common-cell-header">
@@ -168,13 +168,16 @@ export default {
     line-height: 51px;
     margin-left: 18px;
   }
-  &-photo-board-content {
+  &-cell-content {
     // height: 50px;
     max-height: 200px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-y: hidden;
+  }
+  &-photo-board {
+    margin: 10px 10px 20px;
   }
 }
 .container-class {
