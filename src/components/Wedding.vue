@@ -44,13 +44,19 @@
       <div class="wedding-common-cell-header">
         <div class="wedding-common-cell-header-title">婚礼性格</div>
       </div>
-      <div class="wedding-photo-board-content"></div>
+      <div class="wedding-photo-board-content">
+        <p>
+          我理想的婚礼风格是浪漫多彩、优雅、又富有时尚感的设计，理想的宴会场西餐会所、野奢酒店或城市酒店。
+        </p>
+      </div>
     </div>
     <div class="wedding-cell wedding-photo-board">
       <div class="wedding-common-cell-header">
         <div class="wedding-common-cell-header-title">色彩风格</div>
       </div>
-      <div class="wedding-photo-board-content"></div>
+      <div class="wedding-photo-board-content">
+        <div></div>
+      </div>
     </div>
     <div class="wedding-cell van-hairline--bottom wedding-photo-board">
       <div class="wedding-common-cell-header">
@@ -180,5 +186,17 @@ export default {
 .container-class {
   margin: 4px;
   border-radius: 5px;
+}
+.gallery-layout {
+  flex-direction: row;
+}
+.gallery-pic-box-img {
+  border-radius: 5px;
+}
+.gallery-layout {
+  overflow: hidden;
+}
+p {
+  padding: 0 13px;
 }
 </style>
