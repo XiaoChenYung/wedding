@@ -2,19 +2,17 @@
   <div>
     <div class="wedding-user-info">
       <div class="wedding-user-info-left">
-        <img
-          src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=347837335,1617350328&fm=27&gp=0.jpg"
-        >
+        <img :src="userInfo.avatar">
       </div>
       <div class="wedding-user-info-right">
-        <div class="wedding-user-info-name">单尾羊羊</div>
-        <div class="wedding-user-info-sub">
+        <div class="wedding-user-info-name">{{userInfo.nickname}}</div>
+        <!-- <div class="wedding-user-info-sub">
           <img src="../assets/location.png">
-          <label>北京</label>
-        </div>
+          <label>未知</label>
+        </div>-->
         <div class="wedding-user-info-sub">
           <img src="../assets/history.png">
-          <label>婚期：2019-7-7</label>
+          <label>婚期：{{userInfo.weddingDate}}</label>
         </div>
       </div>
     </div>
@@ -24,87 +22,111 @@
       </div>
       <div class="wedding-content">
         <div class="wedding-photo-board">
-          <vue-gallery-pictures
-            :items="items"
-            :boxInitRatio=77
-            :box-container-class="boxContainerClass"
-            last-line-mode="origin"
-            @loaded="loaded"
-            @error="error"
-          >
-            <template slot-scope="scope">
-              <span v-show="scope.item.error">error</span>
-              <span v-show="scope.item.loading && !scope.item.error">loading</span>
-            </template>
-          </vue-gallery-pictures>
+          <div>
+            <span :style="item.stype" v-for="(item, index) in wedding.marrayImages" :key="index">
+              <img class="photo-image" v-if="index % 2 == 0" :src="item.url" alt="">
+            </span>
+          </div>
+          <div>
+            <span :style="item.stype" v-for="(item, index) in wedding.marrayImages" :key="index">
+              <img class="photo-image" v-if="index % 2 == 1" :src="item.url" alt="">
+            </span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="wedding-cell wedding-photo-board">
+    <div class="wedding-cell">
       <div class="wedding-common-cell-header">
         <div class="wedding-common-cell-header-title">婚礼性格</div>
       </div>
       <div class="wedding-cell-content">
         <p>
-          我理想的婚礼风格是浪漫多彩、优雅、又富有时尚感的设计，理想的宴会场西餐会所、野奢酒店或城市酒店。
+          我理想的婚礼风格是
+          <span v-for="(item, index) in wedding.textTags" :key="index">
+            <span class="tags">{{item}}</span>
+            <span v-if="index < wedding.textTags.length - 1">、</span>
+          </span>
+        </p>
+        <p>
+          理想的宴会场地是
+          <span v-for="(item, index) in wedding.placeTags" :key="index">
+            <span class="tags">{{item}}</span>
+            <span v-if="index < wedding.placeTags.length - 1">、</span>
+          </span>
         </p>
       </div>
     </div>
-    <div class="wedding-cell wedding-photo-board">
+    <div class="wedding-cell">
       <div class="wedding-common-cell-header">
         <div class="wedding-common-cell-header-title">色彩风格</div>
       </div>
-      <div class="wedding-photo-board-content">
-        <div></div>
+      <div class="wedding-cell-content">
+        <div class="color-tip">{{wedding.swatchName}}</div>
+        <div class="circle-content">
+          <div v-for="(item, index)  in wedding.colors" :key="index" :style="item" class="circle"></div>
+        </div>
       </div>
-    </div>
-    <div class="wedding-cell van-hairline--bottom wedding-photo-board">
-      <div class="wedding-common-cell-header">
-        <div class="wedding-common-cell-header-title">必要记录</div>
-      </div>
-      <div class="wedding-photo-board-content"></div>
-    </div>
-    <div>
-      <button>重新测试</button>
     </div>
   </div>
 </template>
 
 <script>
-import VueGalleryPictures from "vue-gallery-pictures";
+// import VueGalleryPictures from "vue-gallery-pictures";
+import { Toast } from "vant";
 import axios from "axios";
 
 export default {
-  components: {
-    VueGalleryPictures
-  },
+  components: {},
   data() {
     return {
-      items: [],
+      wedding: {},
+      userInfo: {},
       boxContainerClass: "container-class"
     };
   },
   methods: {
-    loaded(item) {
-      // console.log(item.loading);
-    },
-    error(item, e) {
-      // console.log(item.error, e);
-    }
+    // loaded(item) {
+    //   // console.log(item.loading);
+    // },
+    // error(item, e) {
+    //   // console.log(item.error, e);
+    // }
   },
   created() {
-    const basePath = "https://xieranmaya.github.io/images/cats";
-    axios.get(`${basePath}/cats.json`).then(res => {
-      res.data.forEach(item => {
-        item.src = basePath + "/" + item.url;
-        item.loading = true;
-        item.error = false;
-        item.width = parseInt(item.width / 30);
-        item.height = parseInt(item.height / 30);
-      });
-      console.log(res.data);
-      this.items = res.data.slice(0, 5);
+    Toast.loading({
+      mask: false,
+      message: "加载中..."
     });
+    const weddingPath =
+      "http://120.27.11.247/api/index/marryStyle?token=MDAwMDAwMDAwMIqI096Bntbbg5-yb6zQjKa7dn1sl4ql2oOi2bC0oXzdgJ2uz5WduMmYfLufx6miqruGfWyXiqXahIy2sLSLeJZ_eMeXgWOSng";
+    const userInfoPath =
+      "http://120.27.11.247/api/user/getInfo?token=MDAwMDAwMDAwMIqI096Bntbbg5-yb6zQjKa7dn1sl4ql2oOi2bC0oXzdgJ2uz5WduMmYfLufx6miqruGfWyXiqXahIy2sLSLeJZ_eMeXgWOSng";
+    axios
+      .get(userInfoPath)
+      .then(res => {
+        let item = res.data.data;
+        item.weddingDate = item.marry_time_str.substring(0, 9);
+        this.userInfo = item;
+        return axios.get(weddingPath);
+      })
+      .then(res => {
+        Toast.clear();
+        let item = res.data.data;
+        item.colors = item.colors.map(color => {
+          color = "background-color: " + color;
+          return color;
+        });
+        // item.marrayImages = item.marrayImages.map(mImage => {
+        //   color = "background-color: " + color;
+        //   return color;
+        // });
+        item.marrayImages = item.marrayImages.concat(item.marrayImages)
+        console.log(item);
+        this.wedding = res.data.data;
+      })
+      .catch(err => {
+        Toast.fail(err.message);
+      });
   }
 };
 </script>
@@ -134,12 +156,13 @@ export default {
     line-height: 30px;
     text-align: left;
     margin-left: 13px;
+    margin-top: 10px;
   }
   &-user-info-sub {
     display: flex;
     flex-direction: row;
     margin-left: 13px;
-    margin-top: 8px;
+    margin-top: 10px;
   }
   &-user-info-sub img {
     width: 18px;
@@ -176,15 +199,18 @@ export default {
   }
   &-cell-content {
     // height: 50px;
-    max-height: 200px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-y: hidden;
+    // max-height: 200px;
+    // display: flex;
+    // flex-direction: row;
+    // flex-wrap: nowrap;
+    // overflow-y: hidden;
+    padding-bottom: 10px;
   }
   &-photo-board {
-    margin: 10px 10px 0px;
-    padding-bottom: 20px;
+    height: 240px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
   }
 }
 .container-class {
@@ -203,5 +229,31 @@ export default {
 p {
   padding: 0 13px;
   text-align: left;
+}
+.tags {
+  color: #fd8124;
+}
+.circle-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 27px;
+}
+.color-tip {
+  font-family: PingFangSC-Medium;
+  font-size: 24px;
+  color: #000000;
+  letter-spacing: 0;
+  line-height: 74px;
+}
+.photo-image {
+  height: 100px;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-top: 10px;
 }
 </style>
