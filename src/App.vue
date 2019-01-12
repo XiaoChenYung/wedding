@@ -11,15 +11,6 @@ export default {
   name: "app",
   components: {
     wedding: Wedding
-  },
-  methods: {
-    onClickLeft() {
-      // Toast('暂无后续逻辑~');
-    },
-
-    onClickRight() {
-      // Toast('暂无后续逻辑~');
-    }
   }
 };
 </script>
