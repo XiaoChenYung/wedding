@@ -97,10 +97,12 @@ export default {
       mask: false,
       message: "加载中..."
     });
+    let token = this.$route.query.token
+    console.log(token)
     const weddingPath =
-      "http://120.27.11.247/api/index/marryStyle?token=MDAwMDAwMDAwMIqI096Bntbbg5-yb6zQjKa7dn1sl4ql2oOi2bC0oXzdgJ2uz5WduMmYfLufx6miqruGfWyXiqXahIy2sLSLeJZ_eMeXgWOSng";
+      "http://120.27.11.247/api/index/marryStyle?token=" + token;
     const userInfoPath =
-      "http://120.27.11.247/api/user/getInfo?token=MDAwMDAwMDAwMIqI096Bntbbg5-yb6zQjKa7dn1sl4ql2oOi2bC0oXzdgJ2uz5WduMmYfLufx6miqruGfWyXiqXahIy2sLSLeJZ_eMeXgWOSng";
+      "http://120.27.11.247/api/user/getInfo?token=" + token;
     axios
       .get(userInfoPath)
       .then(res => {
@@ -116,12 +118,6 @@ export default {
           color = "background-color: " + color;
           return color;
         });
-        // item.marrayImages = item.marrayImages.map(mImage => {
-        //   color = "background-color: " + color;
-        //   return color;
-        // });
-        item.marrayImages = item.marrayImages.concat(item.marrayImages)
-        console.log(item);
         this.wedding = res.data.data;
       })
       .catch(err => {
